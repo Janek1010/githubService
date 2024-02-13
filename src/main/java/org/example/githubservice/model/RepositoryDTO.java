@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class RepositoryDTO {
-    private String fork;
+    private boolean fork;
     private String name;
     private OwnerDTO owner;
 

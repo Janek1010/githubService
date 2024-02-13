@@ -24,6 +24,7 @@ public class GithubServiceImpl implements GithubService{
     public Flux<RepositoryDTO> listAllRepositoriesOfUser(String username) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path(REPOS_OF_USER).build(username))
-                .retrieve().bodyToFlux(RepositoryDTO.class);
+                .retrieve().bodyToFlux(RepositoryDTO.class)
+                .filter(repositoryDTO -> !repositoryDTO.isFork());
     }
 }
