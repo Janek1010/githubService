@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class RepositoryDTO {
@@ -12,4 +14,6 @@ public class RepositoryDTO {
     private OwnerDTO owner;
     @JsonProperty("branches_url")
     private String branchesUrl;
+    private List<BranchDTO> branches;
+
 }

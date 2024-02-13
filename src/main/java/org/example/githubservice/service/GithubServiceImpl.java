@@ -1,13 +1,17 @@
 package org.example.githubservice.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.example.githubservice.model.BranchDTO;
 import org.example.githubservice.model.RepositoryDTO;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +33,19 @@ public class GithubServiceImpl implements GithubService{
                 .uri(uriBuilder -> uriBuilder.path(REPOS_OF_USER).build(username))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve().bodyToFlux(RepositoryDTO.class)
-                .filter(repositoryDTO -> !repositoryDTO.isFork());
+                .filter(repositoryDTO -> !repositoryDTO.isFork())
+                .flatMap(this::listAllBranches);
+    }
+    public Mono<RepositoryDTO> listAllBranches(RepositoryDTO repositoryDTO){
+        String uri = repositoryDTO.getBranchesUrl().replace("{/branch}","");
+        return webClient.get()
+                .uri(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToFlux(BranchDTO.class)
+                .collectList()
+                .map(branches -> {
+                    repositoryDTO.setBranches(branches);
+                    return repositoryDTO;
+                });
     }
 }
