@@ -1,5 +1,6 @@
 package org.example.githubservice.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.example.githubservice.model.RepositoryDTO;
 import org.example.githubservice.service.GithubService;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Flux;
 @RestController
 @RequiredArgsConstructor
 public class githubController {
-    private final String REPOS_OF_USER = "/users/{username}/repos";
+    private final String REPOS_OF_USER = "/api/v1/users/{username}/repos";
     private final GithubService githubService;
 
     @GetMapping(REPOS_OF_USER)
