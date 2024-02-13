@@ -1,4 +1,4 @@
 package org.example.githubservice.model;
 
-public interface GithubService {
+public class RepositoryDTO {
 }
