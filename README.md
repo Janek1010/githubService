@@ -42,6 +42,13 @@ Here's an example JSON response for one repository:
 Basic queries are provided in the requests.http file. 
 You can also use Swagger to test the API (click the link above).
 
+# Third-party APis
+
+The project uses the GitHub API to retrieve information about users and their repositories.
+Documentation of two mainly used endpoints:
+https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user
+https://docs.github.com/en/rest/branches/branches?apiVersion=2022-11-28#list-branches
+
 # Technologies
 
 - Java 21
