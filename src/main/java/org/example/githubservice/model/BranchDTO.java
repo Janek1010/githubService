@@ -13,7 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BranchDTO {
     private String name;
-    @JsonUnwrapped
-    @JsonProperty("sha")
     private CommitDTO commit;
 }
