@@ -41,6 +41,7 @@ Here's an example JSON response for one repository:
 
 Basic queries are provided in the requests.http file. 
 You can also use Swagger to test the API (click the link above).
+You have also basic tests in the project.
 
 # Third-party APis
 
