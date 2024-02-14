@@ -1,6 +1,5 @@
 package org.example.githubservice.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.example.githubservice.model.BranchDTO;
 import org.example.githubservice.model.RepositoryDTO;
 import org.springframework.context.annotation.Primary;
@@ -9,12 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user
