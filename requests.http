@@ -1,0 +1,10 @@
+### Repository with few forks, this should return 1 repository only that is not forked
+
+GET http://localhost:8080/api/v1/users/jotzet/repos
+
+### testing query with parameters
+GET http://localhost:8080/api/v1/users/Kondziow/repos?page=0&perPage=2
+
+### testing error
+GET http://localhost:8080/api/v1/users/daashd87asdyas9dhah9sd/repos
+
