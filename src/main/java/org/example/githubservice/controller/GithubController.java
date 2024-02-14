@@ -1,6 +1,5 @@
 package org.example.githubservice.controller;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.example.githubservice.model.RepositoryDTO;
 import org.example.githubservice.model.UserNotFoundErrorResponseDTO;
@@ -9,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 
@@ -23,8 +19,10 @@ public class GithubController {
     private final GithubService githubService;
 
     @GetMapping(value = REPOS_OF_USER, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<RepositoryDTO> listAllRepositoriesOfUser(@PathVariable String username) {
-        return githubService.listAllRepositoriesOfUser(username);
+    public Flux<RepositoryDTO> listAllRepositoriesOfUser(@PathVariable String username,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "30") int perPage){
+        return githubService.listAllRepositoriesOfUser(username,page,perPage);
     }
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<UserNotFoundErrorResponseDTO> handleResponseStatusException(ResponseStatusException ex) {

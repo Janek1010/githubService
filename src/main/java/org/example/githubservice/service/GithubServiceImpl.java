@@ -30,9 +30,12 @@ public class GithubServiceImpl implements GithubService{
     }
 
     @Override
-    public Flux<RepositoryDTO> listAllRepositoriesOfUser(String username) {
+    public Flux<RepositoryDTO> listAllRepositoriesOfUser(String username, int page, int perPage) {
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path(REPOS_OF_USER).build(username))
+                .uri(uriBuilder -> uriBuilder.path(REPOS_OF_USER)
+                        .queryParam("page", page)
+                        .queryParam("per_page", perPage)
+                        .build(username))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
