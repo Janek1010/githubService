@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.example.githubservice.model.BranchDTO;
 import org.example.githubservice.model.RepositoryDTO;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,7 +34,10 @@ public class GithubServiceImpl implements GithubService{
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path(REPOS_OF_USER).build(username))
                 .accept(MediaType.APPLICATION_JSON)
-                .retrieve().bodyToFlux(RepositoryDTO.class)
+                .retrieve()
+                .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
+                        clientResponse -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found")))
+                .bodyToFlux(RepositoryDTO.class)
                 .filter(repositoryDTO -> !repositoryDTO.isFork())
                 .flatMap(this::listAllBranches);
     }
@@ -49,4 +54,5 @@ public class GithubServiceImpl implements GithubService{
                     return repositoryDTO;
                 });
     }
+
 }
