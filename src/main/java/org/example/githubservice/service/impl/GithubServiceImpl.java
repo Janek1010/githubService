@@ -3,6 +3,7 @@ package org.example.githubservice.service.impl;
 import org.example.githubservice.model.dtos.BranchDTO;
 import org.example.githubservice.model.dtos.RepositoryDTO;
 import org.example.githubservice.service.api.GithubService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,8 +19,8 @@ public class GithubServiceImpl implements GithubService {
     private final String REPOS_OF_USER = "/users/{username}/repos";
     private final WebClient webClient;
 
-    public GithubServiceImpl() {
-        this.webClient = WebClient.create("https://api.github.com");
+    public GithubServiceImpl(WebClient.Builder webClientBuilder, @Value("${github.api.base-url}") String rootUrl) {
+        this.webClient = webClientBuilder.baseUrl(rootUrl).build();
     }
 
     @Override
