@@ -32,23 +32,20 @@ public class GithubServiceImpl implements GithubService {
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
                         clientResponse -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
                 .bodyToFlux(RepositoryDTO.class)
-                .filter(repositoryDTO -> !repositoryDTO.isFork())
+                .filter(repositoryDTO -> !repositoryDTO.fork())
                 .flatMap(this::listAllBranches);
     }
 
     @Override
     public Mono<RepositoryDTO> listAllBranches(RepositoryDTO repositoryDTO) {
-        String uri = repositoryDTO.getBranchesUrl().replace("{/branch}", "");
+        String uri = repositoryDTO.branchesUrl().replace("{/branch}", "");
         return webClient.get()
                 .uri(uri)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(BranchDTO.class)
                 .collectList()
-                .map(branches -> {
-                    repositoryDTO.setBranches(branches);
-                    return repositoryDTO;
-                });
+                .map(branches -> new RepositoryDTO(repositoryDTO.name(), repositoryDTO.owner(), repositoryDTO.fork(), repositoryDTO.branchesUrl(), branches));
     }
 
 }

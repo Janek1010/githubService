@@ -6,7 +6,10 @@ import org.example.githubservice.model.dtos.UserNotFoundErrorResponseDTO;
 import org.example.githubservice.service.api.GithubService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 
@@ -23,8 +26,7 @@ public class GithubController {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<UserNotFoundErrorResponseDTO> handleResponseStatusException(ResponseStatusException ex) {
-        return ResponseEntity.status(ex.getStatusCode()).body(UserNotFoundErrorResponseDTO
-                .builder().message(ex.getReason()).status(ex.getStatusCode())
-                .build());
+        return ResponseEntity.status(ex.getStatusCode())
+                .body(new UserNotFoundErrorResponseDTO(ex.getStatusCode(), ex.getReason()));
     }
 }
