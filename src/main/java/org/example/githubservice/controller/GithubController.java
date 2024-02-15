@@ -17,10 +17,8 @@ public class GithubController {
     private final GithubService githubService;
 
     @GetMapping(value = REPOS_OF_USER, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<RepositoryDTO> listAllRepositoriesOfUser(@PathVariable String username,
-                                                         @RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "30") int perPage) {
-        return githubService.listAllRepositoriesOfUser(username, page, perPage);
+    public Flux<RepositoryDTO> listAllRepositoriesOfUser(@PathVariable String username) {
+        return githubService.listAllRepositoriesOfUser(username);
     }
 
     @ExceptionHandler(ResponseStatusException.class)

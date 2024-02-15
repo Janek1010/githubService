@@ -23,11 +23,9 @@ public class GithubServiceImpl implements GithubService {
     }
 
     @Override
-    public Flux<RepositoryDTO> listAllRepositoriesOfUser(String username, int page, int perPage) {
+    public Flux<RepositoryDTO> listAllRepositoriesOfUser(String username) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path(REPOS_OF_USER)
-                        .queryParam("page", page)
-                        .queryParam("per_page", perPage)
                         .build(username))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
