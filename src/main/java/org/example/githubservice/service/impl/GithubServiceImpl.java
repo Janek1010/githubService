@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @Service
 @Primary
 public class GithubServiceImpl implements GithubService {
-    private final String REPOS_OF_USER = "/users/{username}/repos";
+    public static final String REPOS_OF_USER = "/users/{username}/repos";
     private final WebClient webClient;
 
     public GithubServiceImpl(WebClient.Builder webClientBuilder, @Value("${github.api.base-url}") String rootUrl) {

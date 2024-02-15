@@ -1,6 +1,9 @@
-package org.example.githubservice.controller;
+package org.example.githubservice.service.impl;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.example.githubservice.model.dtos.BranchDTO;
+import org.example.githubservice.model.dtos.CommitDTO;
+import org.example.githubservice.model.dtos.OwnerDTO;
 import org.example.githubservice.model.dtos.RepositoryDTO;
 import org.example.githubservice.service.api.GithubService;
 import org.junit.jupiter.api.Test;
@@ -15,14 +18,18 @@ import wiremock.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @WireMockTest(httpPort = 8081)
 @ExtendWith(SpringExtension.class)
-public class GithubControllerIT {
+class GithubServiceImplTest {
     @Autowired
     GithubService githubService;
     @DynamicPropertySource
@@ -31,12 +38,15 @@ public class GithubControllerIT {
     }
 
     @Test
-    void should_return_correct_repositories() throws IOException {
+    void should_return_correct_repositories_Flux() throws IOException {
         // given
         String responseBodyRepositories = IOUtils.resourceToString("/files/correct-response-repositories-from-githubAPI.json", StandardCharsets.UTF_8);
         String responseBodyBranches = IOUtils.resourceToString("/files/correct-response-branches-from-githubAPI.json", StandardCharsets.UTF_8);
+
+        BranchDTO branchDTO = new BranchDTO("main", new CommitDTO("7155aa7c2d68f7e8ab38abbed9ea22595441b32a"));
+        RepositoryDTO repositoryTested = new RepositoryDTO("gimmemoji", new OwnerDTO("jotzet"), new LinkedList<>(List.of(branchDTO)));
+
         String username = "jotzet";
-        String repositoryName = "gimmemoji";
 
         stubFor(get(urlEqualTo("/users/{username}/repos".replace("{username}", username)))
                 .willReturn(
@@ -47,7 +57,7 @@ public class GithubControllerIT {
                 )
         );
 
-        stubFor(get(urlEqualTo("/repos/{username}/{repository}/branches".replace("{username}", username).replace("{repository}", repositoryName)))
+        stubFor(get(urlEqualTo("/repos/{username}/{repository}/branches".replace("{username}", username).replace("{repository}", repositoryTested.name())))
                 .willReturn(
                         aResponse()
                                 .withStatus(200)
@@ -60,50 +70,11 @@ public class GithubControllerIT {
 
         // then
         response.doOnNext(repositoryDTO -> {
-            System.out.println(repositoryDTO.name());
-            System.out.println(repositoryDTO.owner().login());
-            System.out.println(repositoryDTO.branches());
+            assertThat(repositoryDTO.name()).isEqualTo(repositoryTested.name());
+            assertThat(repositoryDTO.owner()).isEqualTo(repositoryTested.owner());
+            assertThat(repositoryDTO.branches().getFirst().name()).isEqualTo(repositoryTested.branches().getFirst().name());
+            assertThat(repositoryDTO.branches().getFirst().commit().sha()).isEqualTo(repositoryTested.branches().getFirst().commit().sha());
         }).blockLast();
     }
 
 }
-
-
-//    @Autowired
-//    WebTestClient webTestClient;
-//
-//    @Test
-//    void testListAllRepositoriesOfUser() {
-//        // Given
-//        String username = "Kondziow";
-//        int page = 1;
-//        int perPage = 2;
-//
-//        // When/Then
-//        webTestClient.get()
-//                .uri("/api/v1/users/{username}/repos?page={page}&perPage={perPage}", username, page, perPage)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .exchange()
-//                .expectStatus()
-//                .isOk()
-//                .expectBody()
-//                .jsonPath("$[0].name").exists()
-//                .jsonPath("$[1].name").exists();
-//    }
-//
-//    @Test
-//    void testUserNotFound() {
-//        // Given
-//        String username = "12i9b12dsblasdklaasd";
-//
-//        // When/Then
-//        webTestClient.get()
-//                .uri("/api/v1/users/{username}/repos", username)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .exchange()
-//                .expectStatus().isNotFound()
-//                .expectBody()
-//                .jsonPath("$.status").exists()
-//                .jsonPath("$.message").exists();
-//    }
-
