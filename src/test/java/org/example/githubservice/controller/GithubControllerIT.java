@@ -1,8 +1,8 @@
 package org.example.githubservice.controller;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.example.githubservice.client.api.GithubClient;
 import org.example.githubservice.model.dtos.RepositoryDTO;
-import org.example.githubservice.service.api.GithubService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 @ExtendWith(SpringExtension.class)
 public class GithubControllerIT {
     @Autowired
-    GithubService githubService;
+    GithubClient githubClient;
     @DynamicPropertySource
     static void configure(DynamicPropertyRegistry registry) {
         registry.add("github.api.base-url", () -> "http://localhost:8081");
@@ -56,7 +56,7 @@ public class GithubControllerIT {
                 )
         );
         //when
-        Flux<RepositoryDTO> response = githubService.listAllRepositoriesOfUser("jotzet");
+        Flux<RepositoryDTO> response = githubClient.getAllRepositoriesByUser("jotzet");
 
         // then
         response.doOnNext(repositoryDTO -> {

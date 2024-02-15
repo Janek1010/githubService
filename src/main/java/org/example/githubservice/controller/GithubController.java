@@ -2,7 +2,7 @@ package org.example.githubservice.controller;
 
 import org.example.githubservice.model.dtos.RepositoryDTO;
 import org.example.githubservice.model.dtos.UserNotFoundErrorResponseDTO;
-import org.example.githubservice.service.api.GithubService;
+import org.example.githubservice.service.GithubService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +23,7 @@ public class GithubController {
 
     @GetMapping(value = REPOS_OF_USER, produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<RepositoryDTO> listAllRepositoriesOfUser(@PathVariable String username) {
-        return githubService.listAllRepositoriesOfUser(username);
+        return githubService.getRepositoriesWithBranchesByUser(username);
     }
 
     @ExceptionHandler(ResponseStatusException.class)

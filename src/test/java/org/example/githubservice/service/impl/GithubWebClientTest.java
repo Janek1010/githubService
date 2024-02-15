@@ -2,11 +2,9 @@ package org.example.githubservice.service.impl;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.example.githubservice.client.api.GithubClient;
 import org.example.githubservice.model.dtos.BranchDTO;
-import org.example.githubservice.model.dtos.CommitDTO;
-import org.example.githubservice.model.dtos.OwnerDTO;
 import org.example.githubservice.model.dtos.RepositoryDTO;
-import org.example.githubservice.service.api.GithubService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @WireMockTest // it will take random port
-class GithubServiceImplTest {
+class GithubWebClientTest {
     @Autowired
-    GithubService githubService;
+    GithubClient githubClient;
 
     @Test
     @Disabled
@@ -67,7 +65,7 @@ class GithubServiceImplTest {
                 )
         );
         //when
-        Flux<RepositoryDTO> response = githubService.listAllRepositoriesOfUser("jotzet");
+        Flux<RepositoryDTO> response = githubClient.getAllRepositoriesByUser("jotzet");
 
         // then
         response.doOnNext(repositoryDTO -> {
