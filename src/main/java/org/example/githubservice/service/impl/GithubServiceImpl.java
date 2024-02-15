@@ -12,9 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation of the GithubService interface for interacting with the GitHub API.
- */
 @Service
 @Primary
 public class GithubServiceImpl implements GithubService {
@@ -34,13 +31,10 @@ public class GithubServiceImpl implements GithubService {
                         .build(username))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                // Handles response statuses, in this case 404 (NOT_FOUND).
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
                         clientResponse -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
-                // Maps the response body to a Flux<RepositoryDTO> stream.
                 .bodyToFlux(RepositoryDTO.class)
                 .filter(repositoryDTO -> !repositoryDTO.isFork())
-                // For each repository, calls the listAllBranches method to retrieve a list of branches.
                 .flatMap(this::listAllBranches);
     }
 
@@ -53,7 +47,6 @@ public class GithubServiceImpl implements GithubService {
                 .retrieve()
                 .bodyToFlux(BranchDTO.class)
                 .collectList()
-                // Collected branches are mapped to a list and assigned to the repository.
                 .map(branches -> {
                     repositoryDTO.setBranches(branches);
                     return repositoryDTO;

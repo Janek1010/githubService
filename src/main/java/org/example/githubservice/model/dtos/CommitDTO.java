@@ -7,18 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Represents a commit in a repository.
- */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommitDTO {
 
-    /**
-     * SHA of the  LAST commit.
-     */
     @JsonValue
     @JsonProperty("sha")
     private String sha;

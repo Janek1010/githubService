@@ -7,9 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Represents the owner of a repository.
- */
 @Data
 @Builder
 @AllArgsConstructor
