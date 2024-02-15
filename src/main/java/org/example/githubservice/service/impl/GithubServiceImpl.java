@@ -45,7 +45,7 @@ public class GithubServiceImpl implements GithubService {
                 .retrieve()
                 .bodyToFlux(BranchDTO.class)
                 .collectList()
-                .map(branches -> new RepositoryDTO(repositoryDTO.name(), repositoryDTO.owner(), repositoryDTO.fork(), repositoryDTO.branchesUrl(), branches));
+                .map(branches -> new RepositoryDTO(repositoryDTO.name(), repositoryDTO.owner(), branches));
     }
 
 }

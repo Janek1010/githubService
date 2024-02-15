@@ -10,8 +10,12 @@ public record RepositoryDTO(
         //@JsonProperty("ownerLogin")
         OwnerDTO owner,
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        boolean fork,
+        Boolean fork,
         @JsonProperty(value = "branches_url", access = JsonProperty.Access.WRITE_ONLY)
         String branchesUrl,
         List<BranchDTO> branches
-) {}
+) {
+        public RepositoryDTO(String name, OwnerDTO owner, List<BranchDTO> branches) {
+                this(name, owner,null, null, branches);
+        }
+}
