@@ -1,40 +1,41 @@
 package org.example.githubservice.service.impl;
 
+import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.example.githubservice.model.dtos.BranchDTO;
 import org.example.githubservice.model.dtos.CommitDTO;
 import org.example.githubservice.model.dtos.OwnerDTO;
 import org.example.githubservice.model.dtos.RepositoryDTO;
 import org.example.githubservice.service.api.GithubService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import wiremock.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @SpringBootTest
-@WireMockTest(httpPort = 8081)
-@ExtendWith(SpringExtension.class)
+@WireMockTest // it will take random port
 class GithubServiceImplTest {
     @Autowired
     GithubService githubService;
-    @DynamicPropertySource
-    static void configure(DynamicPropertyRegistry registry) {
-        registry.add("github.api.base-url", () -> "http://localhost:8081");
+
+    @Test
+    @Disabled
+    void testing_random_port_and_localhost(WireMockRuntimeInfo wmRuntimeInfo) {
+        int port = wmRuntimeInfo.getHttpPort();
+        System.out.println("Port: " + port);
+
+        System.out.println("Host: "+  wmRuntimeInfo.getHttpBaseUrl());
     }
 
     @Test
