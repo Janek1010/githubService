@@ -24,14 +24,14 @@ Here's an example JSON response for one repository:
 ```
 [
     {
-        "name": "gimmemoji",
+        "name": "mines",
+        "ownerLogin": "marsss",
         "branches": [
             {
                 "name": "main",
-                "commit": "7123aa7c2d68f7e8ab38abbed9ea22595441b32a"
+                "sha": "7155aa7c2d68f7e8ab38abbed9ea22595441b32a"
             }
-        ],
-        "ownerLogin": "zeto"
+        ]
     }
 ]
 ```
@@ -39,9 +39,12 @@ Here's an example JSON response for one repository:
 
 # Testing
 
-Basic queries are provided in the requests.http file. 
-You can also use Swagger to test the API (click the link above).
-You have also basic tests in the project.
+Basic queries are provided in the requests.http file. You can also use Swagger to test the API (click the link above).
+Additionally, there are basic tests included in the project. Further tests are implemented in the program, you can verify the code quality by typing
+``
+mvn clean package
+``
+
 
 # Third-party APis
 
