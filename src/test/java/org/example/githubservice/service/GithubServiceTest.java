@@ -42,7 +42,7 @@ class GithubServiceTest {
 
         when(githubClient.getAllBranches(any())).thenReturn(Flux.just(branch1, branch2));
 
-        Flux<BranchDTO> branchesReturned = githubService.getListOfBranchesDTO(repositoryTested);
+        Flux<BranchDTO> branchesReturned = githubService.getBranchesByRepository(repositoryTested);
 
         branchesReturned.collectList().block().forEach(branchDTO -> {
             if (branchDTO.name().equals("branch1")) {

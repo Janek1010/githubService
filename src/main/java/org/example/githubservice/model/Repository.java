@@ -7,7 +7,7 @@ import java.util.List;
 public record Repository(
         String name,
         Owner owner,
-        Boolean fork,
+        boolean fork,
         @JsonProperty("branches_url")
         String branchesUrl,
         List<Branch> branches

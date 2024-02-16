@@ -17,13 +17,13 @@ public class GithubService {
 
     public Flux<RepositoryDTO> getRepositoriesWithBranchesByUser(String username) {
         return githubClient.getAllRepositoriesByUser(username)
-                .filter(repositoryDTO -> !repositoryDTO.fork())
-                .concatMap(repository -> getListOfBranchesDTO(repository)
+                .filter(repository -> !repository.fork())
+                .flatMap(repository -> getBranchesByRepository(repository)
                         .collectList()
                         .map(branches -> new RepositoryDTO(repository.name(), repository.owner().login(), branches)));
     }
 
-    public Flux<BranchDTO> getListOfBranchesDTO(Repository repository) {
+    public Flux<BranchDTO> getBranchesByRepository(Repository repository) {
         return githubClient.getAllBranches(repository)
                 .map(branch -> new BranchDTO(branch.name(), branch.commit().sha()));
     }
