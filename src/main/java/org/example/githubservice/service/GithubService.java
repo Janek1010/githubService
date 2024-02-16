@@ -24,7 +24,7 @@ public class GithubService {
     }
 
     public Flux<BranchDTO> getBranchesByRepository(Repository repository) {
-        return githubClient.getAllBranches(repository)
+        return githubClient.getBranchesByRepository(repository)
                 .map(branch -> new BranchDTO(branch.name(), branch.commit().sha()));
     }
 }

@@ -34,7 +34,7 @@ public class GithubWebClient implements GithubClient {
     }
 
     @Override
-    public Flux<Branch> getAllBranches(Repository repository) {
+    public Flux<Branch> getBranchesByRepository(Repository repository) {
         String uri = repository.branchesUrl().replace("{/branch}", "");
         return webClient.get()
                 .uri(uri)

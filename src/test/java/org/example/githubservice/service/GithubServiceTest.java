@@ -40,7 +40,7 @@ class GithubServiceTest {
         Branch branch1 = new Branch("branch1", new Commit("123"));
         Branch branch2 = new Branch("branch2", new Commit("321"));
 
-        when(githubClient.getAllBranches(any())).thenReturn(Flux.just(branch1, branch2));
+        when(githubClient.getBranchesByRepository(any())).thenReturn(Flux.just(branch1, branch2));
 
         Flux<BranchDTO> branchesReturned = githubService.getBranchesByRepository(repositoryTested);
 
@@ -69,8 +69,8 @@ class GithubServiceTest {
         // when
 
         when(githubClient.getAllRepositoriesByUser(username)).thenReturn(Flux.just(repository1, repository2));
-        when(githubClient.getAllBranches(repository1)).thenReturn(Flux.fromIterable(branches1));
-        when(githubClient.getAllBranches(repository2)).thenReturn(Flux.fromIterable(branches2));
+        when(githubClient.getBranchesByRepository(repository1)).thenReturn(Flux.fromIterable(branches1));
+        when(githubClient.getBranchesByRepository(repository2)).thenReturn(Flux.fromIterable(branches2));
 
         // then
         Flux<RepositoryDTO> result = githubService.getRepositoriesWithBranchesByUser(username);

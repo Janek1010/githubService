@@ -7,5 +7,5 @@ import reactor.core.publisher.Flux;
 public interface GithubClient {
     Flux<Repository> getAllRepositoriesByUser(String username);
 
-    Flux<Branch> getAllBranches(Repository repository);
+    Flux<Branch> getBranchesByRepository(Repository repository);
 }

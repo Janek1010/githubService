@@ -87,7 +87,7 @@ class GithubWebClientTest {
         );
 
         //when
-        Flux<Branch> response = githubClient.getAllBranches(repositoryTested);
+        Flux<Branch> response = githubClient.getBranchesByRepository(repositoryTested);
         // then
         StepVerifier.create(response)
                 .recordWith(ArrayList::new)
