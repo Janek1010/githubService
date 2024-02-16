@@ -1,6 +1,7 @@
 package org.example.githubservice.model.dtos;
 
-public record BranchDTO (
+public record BranchDTO(
         String name,
         String sha
-){}
+) {
+}
