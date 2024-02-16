@@ -23,7 +23,7 @@ public class GithubService {
                         .map(branches -> new RepositoryDTO(repository.name(), repository.owner().login(), branches)));
     }
 
-    private Flux<BranchDTO> getListOfBranchesDTO(Repository repository) {
+    public Flux<BranchDTO> getListOfBranchesDTO(Repository repository) {
         return githubClient.getAllBranches(repository)
                 .map(branch -> new BranchDTO(branch.name(), branch.commit().sha()));
     }

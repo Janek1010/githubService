@@ -1,13 +1,11 @@
-package org.example.githubservice.service.impl;
+package org.example.githubservice.client;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.example.githubservice.client.api.GithubClient;
 import org.example.githubservice.model.Branch;
 import org.example.githubservice.model.Commit;
 import org.example.githubservice.model.Owner;
 import org.example.githubservice.model.Repository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,16 +29,16 @@ class GithubWebClientTest {
     @Autowired
     GithubClient githubClient;
 
-    @Test
-    @Disabled
-    void testing_random_port_and_localhost(WireMockRuntimeInfo wmRuntimeInfo) {
-        int port = wmRuntimeInfo.getHttpPort();
-        System.out.println("Port: " + port);
-        System.out.println("Host: "+  wmRuntimeInfo.getHttpBaseUrl());
-    }
+//    @Test
+//    @Disabled
+//    void testingRandomPortAndLocalhost(WireMockRuntimeInfo wmRuntimeInfo) {
+//        int port = wmRuntimeInfo.getHttpPort();
+//        System.out.println("Port: " + port);
+//        System.out.println("Host: "+  wmRuntimeInfo.getHttpBaseUrl());
+//    }
 
     @Test
-    void should_return_correct_repositories_Flux() throws IOException {
+    void shouldReturnCorrectRepositoriesFlux() throws IOException {
         // given
         final String responseBodyRepositories = IOUtils.resourceToString("/files/correct-response-repositories-from-githubAPI.json", StandardCharsets.UTF_8);
         Repository repositoryTested = new Repository("gimmemoji", new Owner("jotzet"), false, "https://api.github.com/repos/jotzet/gimmemoji/branches{/branch}", null);
@@ -71,7 +69,7 @@ class GithubWebClientTest {
 
 
     @Test
-    void should_return_correct_branches_Flux() throws IOException {
+    void shouldReturnCorrectBranchesFlux() throws IOException {
         // given
         final String responseBodyBranches = IOUtils.resourceToString("/files/correct-response-branches-from-githubAPI.json", StandardCharsets.UTF_8);
         Branch branch = new Branch("main", new Commit("7155aa7c2d68f7e8ab38abbed9ea22595441b32a"));
