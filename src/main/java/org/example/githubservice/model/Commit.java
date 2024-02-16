@@ -1,4 +1,6 @@
 package org.example.githubservice.model;
 
-public record Commit(String sha) {
+public record Commit(
+        String sha
+) {
 }

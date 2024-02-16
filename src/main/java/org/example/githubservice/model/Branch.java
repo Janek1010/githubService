@@ -1,5 +1,7 @@
 package org.example.githubservice.model;
 
-public record Branch(String name, Commit commit) {
-
+public record Branch(
+        String name,
+        Commit commit
+) {
 }
